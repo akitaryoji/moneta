@@ -8,8 +8,7 @@
         <v-select
           item-text="name"
           item-value="id"
-          :items="accounts(branchId)"
-          @input="$store.commit('transfer/accountId', $event)"
+          :items="accounts(branchId).filter(account => account.id !==  id)"
         />
         <v-btn nuxt dark to="amount" color="primary" :disabled="!accountId">
           次へ
@@ -26,6 +25,7 @@ import { mapGetters } from "vuex";
 export default {
   middleware: ["hasBank", "hasBranch"],
   computed: {
+    ...mapGetters("login", ["id"]),
     ...mapGetters("accounts", ["accounts"]),
     ...mapGetters("transfer", ["bankId", "branchId", "accountId"]),
   },
