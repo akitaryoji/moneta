@@ -4,6 +4,7 @@
       <v-toolbar-title>振込金額を入力して下さい</v-toolbar-title>
     </v-toolbar>
     <v-card-text>
+      <code>{{ amount }}</code>
       <v-form v-model="valid">
         <v-text-field
           name="金額"
@@ -23,6 +24,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { tsConstructSignatureDeclaration } from '@babel/types';
 
 export default {
   middleware: ["hasBank", "hasBranch", "hasAccount"],
@@ -35,9 +37,13 @@ export default {
   },
   methods: {
     transfer() {
-      this.transferFrom();
-      this.transferTo();
-      this.$router.push("/");
+      var fromCheck = confirm("入力した金額でよろしいですか？");
+      if(fromCheck==true){
+       this.transferFrom();
+       this.transferTo();
+       this.$router.push("/");
+       var fromCheck = confirm("振込が完了しました");
+      }
     },
     transferFrom() {
       let total = this.account.total;
